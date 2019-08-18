@@ -3,11 +3,10 @@
 include('includes/config.php');
 include('includes/db.php');
 
-
 $message = '';
 
 if(isset($_POST['signin'])) {
-    session_start(); //Start the session
+  session_start(); //Start the session
 
     $username = $_POST['username'];
     $password = $_POST['password'];
@@ -35,7 +34,7 @@ if(isset($_POST['signin'])) {
       $stmt->execute([$username]);
       $row = $stmt->fetch();
 
-      header("location: dashboard.php");
+      header("location:dashboard.php");
       // if(isset($_SESSION['user'])){
       //   header('location: home.php');
       // }
@@ -59,7 +58,7 @@ if(isset($_POST['signin'])) {
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="../../index2.html"><b>PU</b> IT CLUB</a>
+    <a href="../../index2.html"><b>PU</b> ADMIN</a>
   </div>
   <?php echo $message; ?>
   <!-- /.login-logo -->
@@ -92,8 +91,6 @@ if(isset($_POST['signin'])) {
     </form>
 
     <a href="reset_password.php">I forgot my password</a><br>
-    <a href="register.php" class="text-center">Register a new membership</a><br>
-    <a href="admin/login.php" class="text-center">Sign in as admin</a>
 
   </div>
   <!-- /.login-box-body -->

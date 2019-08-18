@@ -12,11 +12,14 @@ if(isset($_POST['register'])){
   $password = $_POST['password'];
   $repassword = $_POST['repassword'];
 
+  // Ensure the new user in not blocked
+  $status = true;
+
   if(empty($email) || empty($password)) {
     $message .= '
 					<div class="callout callout-danger">
 		                <h4><i class="icon fa fa-warning"></i> Error!</h4>
-		                All field are required
+		                All fields are required
 		            </div>
 				';
     } else {
@@ -24,7 +27,7 @@ if(isset($_POST['register'])){
         $message .= '
 					<div class="callout callout-danger">
 		                <h4><i class="icon fa fa-warning"></i> Error!</h4>
-                    passwords did not match
+                    Passwords did not match
 		            </div>
 				';
     
@@ -45,19 +48,21 @@ if(isset($_POST['register'])){
 				';
       } else {
         try{
-          $sql="INSERT INTO members(username,email,password) VALUES(?,?,?)";
+          $sql="INSERT INTO members(username,email,password,status) VALUES(?,?,?,?)";
           $stmt = $pdo->prepare($sql);
-          $stmt->execute([$username, $email, $password]);
+          $stmt->execute([$username, $email, $password, $status]);
           $count = $stmt->rowCount();
   
           $lastInsertId = $pdo->lastInsertId();
       
       if($lastInsertId){
         $message .= '
-              <div class="callout callout-danger">
+              <div class="callout callout-success">
                         <h4><i class="icon fa fa-check"></i> Success!</h4>
-                        Account activated - Email: <b>'.$email.'</b>.
+                        Account <b>'.$username.'</b> is activated. You can <a href="login.php">login</a>
                     </div>
+
+                    
             ';
   
       }
@@ -82,35 +87,8 @@ if(isset($_POST['register'])){
 }
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Registration Page</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-  <!-- iCheck -->
-  <link rel="stylesheet" href="plugins/iCheck/square/blue.css">
+<?php include('includes/header.php');?>
 
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
-
-  <!-- Google Font -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-</head>
 <body class="hold-transition register-page">
 <div class="register-box">
   <div class="register-logo">
@@ -141,7 +119,7 @@ if(isset($_POST['register'])){
         <div class="col-xs-8">
           <div class="checkbox icheck">
             <label>
-              <input type="checkbox"> I agree to the <a href="#">terms</a>
+              <input type="checkbox"> I agree to the <a href="terms.php">terms</a>
             </label>
           </div>
         </div>
@@ -153,18 +131,14 @@ if(isset($_POST['register'])){
       </div>
     </form>
 
-    <a href="login.html" class="text-center">I already have a membership</a>
+    <a href="login.php" class="text-center">I already have a membership</a>
   </div>
   <!-- /.form-box -->
 </div>
 <!-- /.register-box -->
 
-<!-- jQuery 3 -->
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap 3.3.7 -->
-<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- iCheck -->
-<script src="plugins/iCheck/icheck.min.js"></script>
+<?php include('includes/footer.php');?>
+
 <script>
   $(function () {
     $('input').iCheck({

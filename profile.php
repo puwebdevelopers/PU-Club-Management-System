@@ -19,15 +19,16 @@
 	        			<div class="box-body">
 	        				<div class="col-sm-3">
                   
-	        					<img src="<?php echo (!empty($row['photo'])) ? '../images/'.$row['photo'] : '../images/profile.jpg'; ?>" width="100%">
+	        					<img src="<?php echo (!empty($row['photo'])) ? 'images/'.$row['photo'] : 'images/profile.jpg'; ?>" width="100%">
 	        				</div>
 	        				<div class="col-sm-9">
 	        					<div class="row">
 	        						<div class="col-sm-3">
 	        							<h4>Userame:</h4>
 	        							<h4>Email:</h4>
-                                        <h4>Course</h4>
+												<h4>Cource</h4>
                                         <h4>Year of study</h4>
+                                        
 	        							<h4>Skills</h4>
 	        							<h4>Note</h4>
 	        							<h4>Member Since:</h4>
@@ -38,12 +39,12 @@
 	        									<a href="#profile" class="btn btn-success btn-flat btn-sm" data-toggle="modal"><i class="fa fa-edit"></i> Edit</a>
 	        								</span>
 	        							</h4>
-												<h4><?php echo $row['email']; ?></h4>
-	        							<h4><?php echo $row['education']; ?></h4>
+	        							<h4><?php echo $row['email']; ?></h4>
+												<h4><?php echo $row['education'] ?></h4>
 												<h4><?php echo $row['year'] ?></h4>
 	        							<h4><?php echo $row['skills']; ?></h4>
-	        							<h4><?php echo $row['notes']; ?></h4>
-												
+	        							
+												<h4><?php echo $row['notes']; ?></h4>
 												<h4><?php echo date('M d, Y', strtotime($row['username'])) ?></h4>
 	        						</div>
 	        					</div>
@@ -56,7 +57,7 @@
 	        				<h4 class="box-title"><i class="fa fa-calendar"></i> <b>Post History</b></h4>
 	        			</div>
 	        			<div class="box-body">
-	        			
+	        				
 	        					<?php
 	        		
 
@@ -76,7 +77,7 @@
 	        									$total  = 'subtotal';
 	        								}
 	        								echo "
-	        							
+	        								
 	        								";
 	        							}
 

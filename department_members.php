@@ -1,14 +1,31 @@
-<?php include('includes/config.php');?>
+<?php
+
+include('includes/config.php');?>
 <?php include('includes/db.php');?>
 
-<?php include('includes/header.php');?>
+<?php include('includes/header.php');
+
+$_SESSION['id'] = $_GET['row'];
+
+$id = $_SESSION['id'];
+
+$sql ='SELECT * FROM tbldepartments WHERE id = :id ';
+$stmt = $pdo->prepare($sql);
+$stmt->execute(['id'=>$id]);
+
+$departmentname = $stmt->fetch();
+
+
+
+?>
 
    <!-- Content Wrapper. Contains page content -->
    <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Members
+
+      <?php echo $departmentname['DepartmentName'].'`s Members' ?>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -21,47 +38,38 @@
     <div class="row">
         <div class="col-xs-12">
           <div class="box">
-            <div class="box-header with-border">
-              <a href="#addnew" data-toggle="modal" class="btn btn-primary btn-sm btn-flat"><i class="fa fa-plus"></i> Add Member</a>
+          <div class="box-header with-border">
+              <a href="departments.php" class="btn btn-primary btn-sm btn-flat"><i class="fa fa-arrow-left"></i> Departments</a>
             </div>
             <div class="box-body">
               <table id="example1" class="table table-bordered">
                 <thead>
                   <th>Photo</th>
-                  <th>Email</th>
                   <th>Username</th>
-                  <th>status</th>
                   <th>Date Joined</th>
                   <th>Actions</th>
                 </thead>
                 <tbody>
                   <?php
                     try{
-                      $sql ='SELECT * FROM members';
+                      $sql ='SELECT * FROM members WHERE department_id = :id ';
                       $stmt = $pdo->prepare($sql);
-                      $stmt->execute();
+                      $stmt->execute(['id'=>$id]);
                       foreach($stmt as $user){
-                        $image = (!empty($user['photo'])) ? '../images/'.$user['photo'] : '../images/profile.jpg';
-                        
-                        $status = (!$user['status']) ? '<a href="#block"  data-toggle="modal" class="btn btn-danger btn-xs">Block</a>' : '<a href="#unblock" class="btn btn-warning btn-xs"  data-toggle="modal">Unblock</a>';
+                        $image = (!empty($user['photo'])) ? 'images/'.$user['photo'] : 'images/profile.jpg';
+                        $active = (!$user['status']) ? '<span class="pull-right"><a href="#activate" class="status" data-toggle="modal" data-id="'.$row['id'].'"><i class="fa fa-check-square-o"></i></a></span>' : '';
+                        $status = (!$user['status']) ? '<button class="btn btn-danger btn-xs  btn-flat>Block</button>' : '<button class="btn btn-warning btn-xs">Unblock</button>';
                         echo "
                           <tr>
                             <td>
                               <img src='".$image."' height='30px' width='30px'>
-                              <span class='pull-right'><a href='#edit_photo' class='photo' data-toggle='modal' data-id='".$user['id']."'><i class='fa fa-edit'></i></a></span>
                             </td>
-                            <td>".$user['email']."</td>
                             <td>".$user['username'].' '.$user['username']."</td>
-                            <td>
-                            <a data-id='".$user['id']."'> ".$status."</a>
-                            </td>
                             <td>".date('M d, Y', strtotime($user['username']))."</td>
                             <td>
-                            <button class='btn btn-success btn-sm delete btn-flat' data-id='".$user['id']."'><i class='fa fa-trash'></i> Delete</button>
                               <a role='button' href='user_profile.php?user=".$user['id']."' class='btn btn-primary btn-sm btn-flat' data-id='".$row['id']."'><i class='fa fa-eye'></i> View Profile</a>
-
-              
-                            </td>
+                          
+                              </td>
                           </tr>
                         ";
                       }

@@ -114,7 +114,7 @@ if($lastInsertId){
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Edit Department</h4>
+                <h4 class="modal-title">Add New Department</h4>
               </div>
               <div class="modal-body">
               <form method="POST" action="<?php $_SERVER['PHP_SELF']; ?>">
@@ -150,7 +150,7 @@ if($lastInsertId){
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Delete Department</h4>
+                <h4 class="modal-title">Add New Department</h4>
               </div>
               <div class="modal-body">
               <h2>Are you sure you want to delete this department?</h2>
@@ -173,7 +173,7 @@ if($lastInsertId){
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Edit Logo</h4>
+                <h4 class="modal-title">Add New Member</h4>
               </div>
               <div class="modal-body">
               <form method="POST" action="<?php $_SERVER['PHP_SELF']; ?>">

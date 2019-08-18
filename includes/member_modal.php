@@ -40,7 +40,7 @@
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Delete Member</h4>
+                <h4 class="modal-title">Add New Member</h4>
               </div>
               <div class="modal-body">
               <h2>Are you sure you want to delete this User?  </h2>
@@ -62,7 +62,7 @@
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Edit Photo</h4>
+                <h4 class="modal-title">Add New Member</h4>
               </div>
               <div class="modal-body">
               <form method="POST" action="<?php $_SERVER['PHP_SELF']; ?>">
@@ -75,50 +75,6 @@
               <div class="modal-footer">
               <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
               <button type="submit" class="btn btn-primary btn-flat" name="add"><i class="fa fa-save"></i> Save</button>
-              </div>
-            </div>
-            <!-- /.modal-content -->
-          </div>
-          <!-- /.modal-dialog -->
-        </div>
-
-         <!-- BLOCK MODAL -->
-         <div class="modal modal-danger fade" id="block">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Block Member</h4>
-              </div>
-              <div class="modal-body">
-              <h2>Are you sure you want to Block this User?  </h2>
-              </div>
-              <div class="modal-footer">
-              <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Cancel</button>
-              <button type="submit" class="btn btn-primary btn-flat" name="add"><i class="fa  fa-check"></i> Ok</button>
-              </div>
-            </div>
-            <!-- /.modal-content -->
-          </div>
-          <!-- /.modal-dialog -->
-        </div>
-
-         <!-- UNBLOCK MODAL -->
-         <div class="modal modal-danger fade" id="unblock">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Unblock Member</h4>
-              </div>
-              <div class="modal-body">
-              <h2>Are you sure you want to Unblock this User?  </h2>
-              </div>
-              <div class="modal-footer">
-              <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Cancel</button>
-              <button type="submit" class="btn btn-primary btn-flat" name="add"><i class="fa  fa-check"></i> Ok</button>
               </div>
             </div>
             <!-- /.modal-content -->
