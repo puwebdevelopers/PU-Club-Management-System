@@ -1,9 +1,8 @@
 <footer class="main-footer">
     <div class="pull-right hidden-xs">
-      <b>Version</b> 2.4.13
+      <b>Design: <a href="https://adminlte.io">AdminLTE</a>. Version</b> 2.4.13
     </div>
-    <strong>Copyright &copy;<a href="#"> Pu Copmputer Club</a>.</strong> All rights
-    reserved.
+    <strong>Copyright &copy; Pwani University Computer Club </strong> By<a href="https://mathumedia.com"> Mathu Media</a>
   </footer>
 
   <!-- Control Sidebar -->

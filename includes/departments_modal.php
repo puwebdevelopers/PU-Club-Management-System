@@ -5,9 +5,9 @@ require_once('db.php');
 $message = '';
 
 // Check for Submission
-if(isset($_POST['add'])){
+if(isset($_POST['join'])){
 
-  echo 'set';
+  header("location: dashboard.php");
   // Get form data
   $dptmtName = $_POST['dptmtname'];
   $dptmtCode = $_POST['dptmtcode'];
@@ -26,7 +26,7 @@ if(isset($_POST['add'])){
           </div>
           
   ';
-} else {
+} else { header("location: dashboard.php");
   try{
     $sql="INSERT INTO tbldepartments(DepartmentName,DepartmentCode) VALUES(?,?)";
     $stmt = $pdo->prepare($sql);
@@ -192,3 +192,28 @@ if($lastInsertId){
           </div>
           <!-- /.modal-dialog -->
         </div>
+
+        <!-- Join MODAL -->
+        <div class="modal modal-info fade" id="join">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Join Department</h4>
+              </div>
+              <div class="modal-body">
+              <h2>Are you sure you want to Join this department?</h2>
+      </form>
+              </div>
+              <div class="modal-footer">
+              <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Cancel</button>
+              <button type="submit" class="btn btn-primary btn-flat" name="join"><i class="fa fa-check"></i> Ok</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+
+        

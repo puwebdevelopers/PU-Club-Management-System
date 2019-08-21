@@ -1,93 +1,96 @@
 <?php
-include('includes/config.php');
-include('includes/db.php');
- 
-$message = '';
+    include('includes/config.php');
+    include('includes/db.php');
 
-// Check for Submission
-if(isset($_POST['register'])){
-  // Get form data
-  $username = $_POST['username'];
-  $email = $_POST['email'];
-  $password = $_POST['password'];
-  $repassword = $_POST['repassword'];
-
-  // Ensure the new user in not blocked
-  $status = true;
-
-  if(empty($email) || empty($password)) {
-    $message .= '
-					<div class="callout callout-danger">
-		                <h4><i class="icon fa fa-warning"></i> Error!</h4>
-		                All fields are required
-		            </div>
-				';
-    } else {
-      if($password != $repassword){
-        $message .= '
-					<div class="callout callout-danger">
-		                <h4><i class="icon fa fa-warning"></i> Error!</h4>
-                    Passwords did not match
-		            </div>
-				';
-    
-      }
-      else{
-        $sql = 'SELECT * FROM members WHERE username = :username OR email = :email';
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([$username,$email]);
-        $row = $stmt->fetchAll();
-        $rowCount = $stmt->rowCount();
-
-        if($rowCount > 0){
-          $message .= '
-					<div class="callout callout-danger">
-		                <h4><i class="icon fa fa-warning"></i> Error!</h4>
-		                The username or email already exists!
-		            </div>
-				';
-      } else {
-        try{
-          $sql="INSERT INTO members(username,email,password,status) VALUES(?,?,?,?)";
-          $stmt = $pdo->prepare($sql);
-          $stmt->execute([$username, $email, $password, $status]);
-          $count = $stmt->rowCount();
+    include('includes/login-header.php');  
   
-          $lastInsertId = $pdo->lastInsertId();
-      
-      if($lastInsertId){
-        $message .= '
-              <div class="callout callout-success">
-                        <h4><i class="icon fa fa-check"></i> Success!</h4>
-                        Account <b>'.$username.'</b> is activated. You can <a href="login.php">login</a>
-                    </div>
+  $message = '';
 
-                    
+  // Check for Submission
+  if(isset($_POST['register'])){
+    // Get form data
+    $username = htmlspecialchars($_POST['username']);
+    $email = htmlspecialchars($_POST['email']);
+    $password = md5(htmlspecialchars($_POST['password']));    
+    $repassword = md5(htmlspecialchars($_POST['repassword']));
+
+    // Ensure the new user in not blocked
+    $status = true;
+   
+    if(empty($email) || empty($password)) {
+      $message .= '
+            <div class="callout callout-danger">
+                <h4><i class="icon fa fa-warning"></i> Error!</h4>
+                All fields are required
+             </div>
+          ';
+      } 
+      if(filter_var($email, FILTER_VALIDATE_EMAIL) === false){
+        // Failed
+        $message .= '
+              <div class="callout callout-danger">
+                  <h4><i class="icon fa fa-warning"></i> Error!</h4>
+                  Please use a valid email
+              </div>
             ';
-  
       }
-        }
-        catch(PDOException $e){
+      else {
+        if($password != $repassword){
           $message .= '
-          <div class="callout callout-danger">
-                    <h4><i class="icon fa fa-warning"></i> Error!</h4>
-                    '.$e->getMessage().'
-                </div>
-        ';
+            <div class="callout callout-danger">
+                <h4><i class="icon fa fa-warning"></i> Error!</h4>
+                Passwords did not match
+            </div>
+          ';     
         }
-       
-      }
+        else {        
+          $sql = 'SELECT * FROM members WHERE username = :username OR email = :email';
+          $stmt = $pdo->prepare($sql);
+          $stmt->execute([$username,$email]);
+          $row = $stmt->fetchAll();
+          $rowCount = $stmt->rowCount();
 
-       
-
+          if($rowCount > 0){
+            $message .= '
+              <div class="callout callout-danger">
+                  <h4><i class="icon fa fa-warning"></i> Error!</h4>
+                  The username or email already exists!
+              </div>
+            ';
+        } 
+        else {
+          try{
+              $sql="INSERT INTO members(username,email,password,status) VALUES(?,?,?,?)";
+              $stmt = $pdo->prepare($sql);
+              $stmt->execute([$username, $email, $password, $status]);
+              $count = $stmt->rowCount();
+                    
+              $lastInsertId = $pdo->lastInsertId();
         
-       
-      }  
-}
-}
+            if($lastInsertId){
+              $message .= '
+                    <div class="callout callout-success">
+                        <h4><i class="icon fa fa-check"></i> Success!</h4>
+                        Account <b>'.$username.'</b> is activated. You can login <a href="login.php">here</a>
+                    </div>                        
+                ';      
+              }
+          }
+          catch(PDOException $e){
+            $message .= '
+            <div class="callout callout-danger">
+                <h4><i class="icon fa fa-warning"></i> Error!</h4>
+                '.$e->getMessage().'
+            </div>
+          ';
+          }        
+        }        
+      }   
+   }
+ }
 ?>
 
-<?php include('includes/header.php');?>
+<?php include('includes/login-footer.php');?>
 
 <body class="hold-transition register-page">
 <div class="register-box">
@@ -96,15 +99,15 @@ if(isset($_POST['register'])){
   </div>
   <?php echo $message; ?>
   <div class="register-box-body">
-    <p class="login-box-msg">Register a new membership</p>
+    <p class="login-box-msg">Register as a new member</p>
 
     <form action="" method="POST">
       <div class="form-group has-feedback">
-        <input type="text" class="form-control" name="username" placeholder="Username">
+        <input type="text" class="form-control" name="username" placeholder="username">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="email" class="form-control" name="email" placeholder="Email">
+        <input type="email" class="form-control" name="email" placeholder="email">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
@@ -136,8 +139,6 @@ if(isset($_POST['register'])){
   <!-- /.form-box -->
 </div>
 <!-- /.register-box -->
-
-<?php include('includes/footer.php');?>
 
 <script>
   $(function () {

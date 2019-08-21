@@ -1,8 +1,3 @@
-
-
-<?php include('includes/config.php');?>
-<?php include('includes/db.php');?>
-
 <?php include('includes/header.php');?>
 
   <!-- Content Wrapper. Contains page content -->
@@ -28,13 +23,12 @@
             <div class="inner">
               <?php
                   //count departments
-              $stmt = $pdo->prepare('SELECT * FROM tbldepartments');
-              $stmt->execute();
-              $departmentsCount = $stmt->rowCount();
+                  $stmt = $pdo->prepare('SELECT * FROM departments');
+                  $stmt->execute();
+                  $departmentsCount = $stmt->rowCount();
 
-              echo "<h3>".$departmentsCount."</h3>";
-            ?>
-            
+                  echo "<h3>".$departmentsCount."</h3>";
+               ?>            
               <p>Dept Listed</p>
             </div>
             <div class="icon">
@@ -49,15 +43,14 @@
           <div class="small-box bg-yellow">
             <div class="inner">
             <?php
-                  //count instructors
-              $stmt = $pdo->prepare('SELECT * FROM members WHERE username = "admin"');
+              //count instructors
+              $stmt = $pdo->prepare('SELECT * FROM department_heads');
               $stmt->execute();
               $instructorsCount = $stmt->rowCount();
 
               echo "<h3>".$instructorsCount."</h3>";
-            ?>
-            
-              <p>Dept Instructors</p>
+            ?>            
+            <p>Heads of Dept</p>
             </div>
             <div class="icon">
               <i class="ion ion-person-add"></i>
@@ -71,15 +64,14 @@
           <div class="small-box bg-aqua">
             <div class="inner">
             <?php
-                  //count members
+              //count members
               $stmt = $pdo->prepare('SELECT * FROM members');
               $stmt->execute();
               $membersCount = $stmt->rowCount();
 
               echo "<h3>".$membersCount."</h3>";
             ?>
-
-              <p>Total Regd Users</p>
+            <p>Total Regd Users</p>
             </div>
             <div class="icon">
               <i class="fa fa-users"></i>
@@ -93,15 +85,14 @@
           <div class="small-box bg-red">
             <div class="inner">
             <?php
-                  //count members
-              $stmt = $pdo->prepare('SELECT * FROM members WHERE visitor = 1');
-              $stmt->execute();
-              $membersCount = $stmt->rowCount();
+                //count members
+                $stmt = $pdo->prepare('SELECT * FROM members');
+                $stmt->execute();
+                $membersCount = $stmt->rowCount();
 
-              echo "<h3>".$membersCount."</h3>";
+                echo "<h3>".$membersCount."</h3>";
             ?>
-
-              <p>Unique Users</p>
+            <p>Unique Users</p>
             </div>
             <div class="icon">
               <i class="fa fa-users"></i>
@@ -117,7 +108,6 @@
               <div class="box box-warning direct-chat direct-chat-warning">
                 <div class="box-header with-border">
                   <h3 class="box-title">Direct Chat</h3>
-
                   <div class="box-tools pull-right">
                     <span data-toggle="tooltip" title="3 New Messages" class="badge bg-yellow">3</span>
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -204,7 +194,6 @@
                       <li>
                         <a href="#">
                           <img class="contacts-list-img" src="../images/4.jpg" alt="User Image">
-
                           <div class="contacts-list-info">
                                 <span class="contacts-list-name">
                                   Count Dracula
@@ -219,7 +208,6 @@
                       <li>
                         <a href="#">
                           <img class="contacts-list-img" src="../images/5.jpg" alt="User Image">
-
                           <div class="contacts-list-info">
                                 <span class="contacts-list-name">
                                   Sarah Doe
@@ -234,7 +222,6 @@
                       <li>
                         <a href="#">
                           <img class="contacts-list-img" src="../images/6.jpg" alt="User Image">
-
                           <div class="contacts-list-info">
                                 <span class="contacts-list-name">
                                   Nadia Jolie
@@ -249,7 +236,6 @@
                       <li>
                         <a href="#">
                           <img class="contacts-list-img" src="../images/7.jpg" alt="User Image">
-
                           <div class="contacts-list-info">
                                 <span class="contacts-list-name">
                                   Nora S. Vans
@@ -264,7 +250,6 @@
                       <li>
                         <a href="#">
                           <img class="contacts-list-img" src="../images/8.jpg" alt="User Image">
-
                           <div class="contacts-list-info">
                                 <span class="contacts-list-name">
                                   John K.
@@ -279,7 +264,6 @@
                       <li>
                         <a href="#">
                           <img class="contacts-list-img" src="../images/1.jpg" alt="User Image">
-
                           <div class="contacts-list-info">
                                 <span class="contacts-list-name">
                                   Kenneth M.
@@ -317,7 +301,6 @@
               <div class="box box-danger">
                 <div class="box-header with-border">
                   <h3 class="box-title">Latest Members</h3>
-
                   <div class="box-tools pull-right">
                     <span class="label label-danger">New Members</span>
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -327,39 +310,27 @@
                 <!-- /.box-header -->
                 <?php
                     try{
-                      $sql ='SELECT * FROM members';
-                      $stmt = $pdo->prepare($sql);
-                      $stmt->execute();
-                      foreach($stmt as $row){
-                        $image = (!empty($row['photo'])) ? '../images/'.$row['photo'] : '../images/profile.jpg';
-                      
-                        echo "
-                       
-                       
-                        <div class='col-xs-3 box-body'>
-                  <ul class='users-list clearfix'>
-                  
-                    <img src='".$image."' height='60px' width='60px' class='img-circle'>
-                      <a href='user_profile.php?user=".$row['id']."' class='users-list-name text-center' href='users_profile.php'>".$row['username']."</a>
-                      <span class='users-list-date text-center'>Today</span>
-                    
-                    </ul>
-                    </div>
-                   
-                  
+                          $sql ='SELECT * FROM members';
+                          $stmt = $pdo->prepare($sql);
+                          $stmt->execute();
 
-                        
-
-                  
-                        ";
-                      }
-                    }
+                          foreach($stmt as $row){
+                            $image = (!empty($row['photo'])) ? '../images/'.$row['photo'] : '../images/profile.jpg';                          
+                            echo "   
+                                  <div class='col-xs-3 box-body'>
+                                    <ul class='users-list clearfix'>                  
+                                      <img src='".$image."' height='60px' width='60px' class='img-circle'>
+                                      <a href='user_profile.php?user=".$row['id']."' class='users-list-name text-center' href='users_profile.php'>".$row['username']."</a>
+                                      <span class='users-list-date text-center'>Today</span>                    
+                                    </ul>
+                                  </div>           
+                                  ";
+                           }
+                        }
                     catch(PDOException $e){
                       echo $e->getMessage();
-                    }
-
-  
-                  ?>
+                    }  
+                 ?>
                 <div class="box-footer text-center">
                   <a href="members.php" class="uppercase col-xs-12">View All Users</a>
                 </div>
@@ -367,7 +338,7 @@
               </div>
               <!--/.box -->
             </div>
-                    <div class="col-md-4">
+          <div class="col-md-4">
          <!-- Info Boxes Style 2 -->
          <div class="info-box bg-yellow">
             <span class="info-box-icon"><i class="fa fa-laptop"></i></span>

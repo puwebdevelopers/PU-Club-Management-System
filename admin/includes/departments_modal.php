@@ -12,7 +12,7 @@ if(isset($_POST['add'])){
   $dptmtName = $_POST['dptmtname'];
   $dptmtCode = $_POST['dptmtcode'];
 
-  $sql = 'SELECT * FROM tbldepartments WHERE DepartmentName = :dptmtName OR DepartmentCode = :dptmtCode';
+  $sql = 'SELECT * FROM departments WHERE DepartmentName = :dptmtName OR DepartmentCode = :dptmtCode';
   $stmt = $pdo->prepare($sql);
   $stmt->execute([$dptmtName,$dptmtCode]);
   $row = $stmt->fetchAll();
@@ -28,7 +28,7 @@ if(isset($_POST['add'])){
   ';
 } else {
   try{
-    $sql="INSERT INTO tbldepartments(DepartmentName,DepartmentCode) VALUES(?,?)";
+    $sql="INSERT INTO departments(DepartmentName,DepartmentCode) VALUES(?,?)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$dptmtName,$dptmtCode]);
     $count = $stmt->rowCount();

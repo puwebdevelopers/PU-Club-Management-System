@@ -1,6 +1,3 @@
-<?php include('includes/config.php');?>
-<?php include('includes/db.php');?>
-
 <?php include('includes/header.php');?>
 
    <!-- Content Wrapper. Contains page content -->
@@ -27,8 +24,7 @@
 	        							<h4>Userame:</h4>
 	        							<h4>Email:</h4>
 												<h4>Cource</h4>
-                                        <h4>Year of study</h4>
-                                        
+												<h4>Year of study</h4>                                        
 	        							<h4>Skills</h4>
 	        							<h4>Note</h4>
 	        							<h4>Member Since:</h4>
@@ -40,10 +36,9 @@
 	        								</span>
 	        							</h4>
 	        							<h4><?php echo $row['email']; ?></h4>
-												<h4><?php echo $row['education'] ?></h4>
-												<h4><?php echo $row['year'] ?></h4>
-	        							<h4><?php echo $row['skills']; ?></h4>
-	        							
+												<h4><?php echo $row['course'] ?></h4>
+												<h4><?php echo $row['year_of_study'] ?></h4>
+	        							<h4><?php echo $row['skills']; ?></h4>	        							
 												<h4><?php echo $row['notes']; ?></h4>
 												<h4><?php echo date('M d, Y', strtotime($row['username'])) ?></h4>
 	        						</div>
@@ -51,51 +46,42 @@
 	        				</div>
 	        			</div>
 	        		</div>
-
-                    <div class="box box-solid">
+                <div class="box box-solid">
 	        			<div class="box-header with-border">
 	        				<h4 class="box-title"><i class="fa fa-calendar"></i> <b>Post History</b></h4>
 	        			</div>
-	        			<div class="box-body">
-	        				
-	        					<?php
-	        		
+	        			<div class="box-body">	        				
+	        					<?php       		
+												try{
+														$sql ='SELECT * FROM members';
+														$stmt = $pdo->prepare($sql);
+														$stmt->execute();
 
-	        						try{
-                                        $sql ='SELECT * FROM members';
-                                        $stmt = $pdo->prepare($sql);
-                                        $stmt->execute();
-	        							foreach($stmt as $row){
-                                            $sql ='SELECT * FROM members';
-                                            $stmt2 = $pdo->prepare($sql);
-                                            $stmt2->execute();
-                                            $total = 0;
+													foreach($stmt as $row){
+														$sql ='SELECT * FROM members';
+														$stmt2 = $pdo->prepare($sql);
+														$stmt2->execute();
+														$total = 0;
 
-	        								
-	        								foreach($stmt2 as $row2){
-	        									$subtotal ='price';
-	        									$total  = 'subtotal';
-	        								}
-	        								echo "
-	        								
-	        								";
-	        							}
-
-	        						}
-        							catch(PDOException $e){
-										echo "There is some problem in connection: " . $e->getMessage();
-									}
-
-	        					
-	        					?>
-	        				
+													foreach($stmt2 as $row2){
+															$subtotal ='price';
+															$total  = 'subtotal';
+													}
+														echo "
+														
+													     	";
+													}
+												}
+												catch(PDOException $e){
+													echo "There is some problem in connection: " . $e->getMessage();
+									 	    }	        					
+	        					 ?>	        				
 	        			</div>
 	        		</div>
-
-  
-
   </div>
-  <?php include 'includes/profile_modal.php'; ?>
+
+  <?php include('includes/profile_modal.php'); ?>
+	
   <?php include('includes/footer.php');?>
 
 <script>

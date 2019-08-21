@@ -1,19 +1,22 @@
 <?php
+    include('session.php');  
 
-session_start();
-
- $username = $_SESSION['username'];
- 
- 
-  
- $sql ='SELECT * FROM members  WHERE username =?';
-                      $stmt = $pdo->prepare($sql);
-                      $stmt->execute([$username]);
-                      foreach($stmt as $row){
-                        $image = (!empty($row['photo'])) ? '../images/'.$row['photo'] : '../images/profile.jpg';
-                      }
-
-  
+    // Redirect url to login page when not logged in
+    if(!isset($_SESSION['adminame']) || trim($_SESSION['adminame']) == ''){
+      header('location:login.php');
+      exit();
+    } 
+    $sql = 'SELECT 
+               *, p.photo AS photo 
+            FROM 
+               members 
+            LEFT JOIN
+               profile p ON members.id=p.member_id
+             WHERE
+              username =:username';
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['username'=>$_SESSION['adminame']]);
+    $row = $stmt->fetch();    
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +24,7 @@ session_start();
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Dashboard</title>
+  <title>PU IT CLUB | Admin Dashboard</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -62,11 +65,11 @@ session_start();
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="dashboard.php" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>A</b>LT</span>
+      <span class="logo-mini"><b>PU</b> IT</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Admin</b>LTE</span>
+      <span class="logo-lg"><b>Admin</b>PUIT</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -82,7 +85,7 @@ session_start();
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <img src="<?php echo (!empty($row['photo'])) ? '../images/'.$row['photo'] : '../images/profile.jpg'; ?>" class="user-image" alt="User Image">
-              <span class="hidden-xs"><?php echo $row['username'].' ' .$row['username']; ?></span>
+              <span class="hidden-xs"><?php echo $row['username']; ?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
@@ -122,7 +125,7 @@ session_start();
         <img src="<?php echo (!empty($row['photo'])) ? '../images/'.$row['photo'] : '../images/profile.jpg'; ?>" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p><?php echo $row['username'].' ' .$row['username']; ?></p>
+          <p><?php echo $row['username']; ?></p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
@@ -164,7 +167,7 @@ session_start();
             <li id="treeview-menu"><a href="firstyear.php"><i class="fa fa-circle-o"></i> First Year</a></li>
             <li id="treeview-menu"><a href="secondyear.php"><i class="fa fa-circle-o"></i> Second Year</a></li>
             <li id="treeview-menu"><a href="thirdyear.php"><i class="fa fa-circle-o"></i> Third Year</a></li>
-            <li id="treeview-menu"><a href="fourthyear.php"><i class="fa fa-circle-o"></i> Forth Year</a></li>
+            <li id="treeview-menu"><a href="forthyear.php"><i class="fa fa-circle-o"></i> Forth Year</a></li>
             <li id="treeview-menu"><a href="other.php"><i class="fa fa-circle-o"></i> Other</a></li>
           </ul>
         </li>

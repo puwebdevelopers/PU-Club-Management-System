@@ -1,8 +1,5 @@
-<?php include('includes/config.php');?>
-<?php include('includes/db.php');?>
-
 <?php include('includes/header.php');?>
-
+ 
    <!-- Content Wrapper. Contains page content -->
    <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -17,10 +14,8 @@
         <li class="active">Second Year</li>
       </ol>
     </section>
-
-  
-
   </div>
+
   <?php include('includes/footer.php');?>
 
 <script>
@@ -55,4 +50,3 @@ function getRow(id){
   });
 }
 </script>
-<?php include('includes/footer.php');?>

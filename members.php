@@ -1,12 +1,4 @@
-<?php include('includes/config.php');?>
-<?php include('includes/db.php');?>
-
-<?php include('includes/header.php');
-
-
-
-
-?>
+<?php include('includes/header.php');?>
 
    <!-- Content Wrapper. Contains page content -->
    <div class="content-wrapper">
@@ -37,33 +29,36 @@
                 <tbody>
                   <?php
                     try{
-                      $sql ='SELECT * FROM members';
-                      $stmt = $pdo->prepare($sql);
-                      $stmt->execute();
-                      foreach($stmt as $user){
-                        $image = (!empty($user['photo'])) ? 'images/'.$user['photo'] : 'images/profile.jpg';
-                        $active = (!$user['status']) ? '<span class="pull-right"><a href="#activate" class="status" data-toggle="modal" data-id="'.$row['id'].'"><i class="fa fa-check-square-o"></i></a></span>' : '';
-                        $status = (!$user['status']) ? '<button class="btn btn-danger btn-xs  btn-flat>Block</button>' : '<button class="btn btn-warning btn-xs">Unblock</button>';
-                        echo "
-                          <tr>
-                            <td>
-                              <img src='".$image."' height='30px' width='30px'>
-                            </td>
-                            <td>".$user['username'].' '.$user['username']."</td>
-                            <td>".date('M d, Y', strtotime($user['username']))."</td>
-                            <td>
-                              <a role='button' href='user_profile.php?user=".$user['id']."' class='btn btn-primary btn-sm btn-flat' data-id='".$row['id']."'><i class='fa fa-eye'></i> View Profile</a>
-                          
-                              </td>
-                          </tr>
-                        ";
+                      $sql = 'SELECT 
+                                *, p.photo AS photo 
+                              FROM 
+                                  members 
+                              LEFT JOIN
+                                  profile p ON members.id=p.member_id';                       
+                        $stmt = $pdo->prepare($sql);
+                        $stmt->execute();
+
+                        foreach($stmt as $user){
+                          $image = (!empty($user['photo'])) ? 'images/'.$user['photo'] : 'images/profile.jpg';
+                          $active = (!$user['status']) ? '<span class="pull-right"><a href="#activate" class="status" data-toggle="modal" data-id="'.$row['id'].'"><i class="fa fa-check-square-o"></i></a></span>' : '';
+                          $status = (!$user['status']) ? '<button class="btn btn-danger btn-xs  btn-flat>Block</button>' : '<button class="btn btn-warning btn-xs">Unblock</button>';
+                          echo "
+                              <tr>
+                                <td>
+                                  <img src='".$image."' height='30px' width='30px'>
+                                </td>
+                                <td>".$user['username'].' '.$user['username']."</td>
+                                <td>".date('M d, Y', strtotime($user['username']))."</td>
+                                <td>
+                                  <a role='button' href='user_profile.php?user=".$user['id']."' class='btn btn-primary btn-sm btn-flat' data-id='".$row['id']."'><i class='fa fa-eye'></i> View Profile</a>
+                                 </td>
+                              </tr>
+                            ";
+                        }
                       }
-                    }
                     catch(PDOException $e){
                       echo $e->getMessage();
-                    }
-
-  
+                    }  
                   ?>
                 </tbody>
               </table>
@@ -73,45 +68,11 @@
       </div>
     </section>
     </div>
-  
-
   </div>
 
-  <?php include 'includes/member_modal.php'; ?>
+  <?php include('includes/member_modal.php'); ?>
+
   <?php include('includes/footer.php');?>
-  
-<script>
-$(function(){
-  $(document).on('click', '.profile', function(e){
-    e.preventDefault();
-    $('#profile').modal('show');
-    var id = $(this).data('id');
-    getRow(id);
-  });
-
-  $(document).on('click', '.delete', function(e){
-    e.preventDefault();
-    $('#delete').modal('show');
-    var id = $(this).data('id');
-    getRow(id);
-  });
-
-});
-
-function getRow(id){
-  $.ajax({
-    type: 'POST',
-    url: 'category_row.php',
-    data: {id:id},
-    dataType: 'json',
-    success: function(response){
-      $('.catid').val(response.id);
-      $('#edit_name').val(response.name);
-      $('.catname').html(response.name);
-    }
-  });
-}
-</script>
 
 <script>
 $(function(){

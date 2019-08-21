@@ -1,57 +1,7 @@
 <?php
+  $message = '';
 
-include('includes/config.php');
-include('includes/db.php');
-
-
-$message = '';
-
-if(isset($_POST['signin'])) {
-    session_start(); //Start the session
-
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
-    $_SESSION['username'] = $username;
-    
-    if(empty($username) || empty($password)) {
-      $message .= '
-      <div class="callout callout-danger">
-      <h4><i class="icon fa fa-warning"></i> Error!</h4>
-      All fields are required
-  </div>
-    ';
-    } else {
-    $sql="SELECT email,password FROM members WHERE username=? AND password=?";
-    $stmt = $pdo->prepare($sql);   //Prepare
-    $stmt->execute([$username, $password]);  //Execute
-    $count = $stmt->rowCount();
-    $row = $stmt->fetchALL();
-     
-    if($count == 1) {
-      $_SESSION['username'] = $username;
-      $sql ='SELECT photo FROM members WHERE username=?';
-      $stmt = $pdo->prepare($sql);
-      $stmt->execute([$username]);
-      $row = $stmt->fetch();
-
-      header("location: dashboard.php");
-      // if(isset($_SESSION['user'])){
-      //   header('location: home.php');
-      // }
-      // if(isset($_SESSION['admin'])){
-      //   header('location: admin.php');
-      // }
-    } else {
-      $message .= '
-      <div class="callout callout-danger">
-      <h4><i class="icon fa fa-warning"></i> Error!</h4>
-      Incorrect username or password
-  </div>
-    ';
-    }     
-  }
-}
+  include('includes/session.php');
 ?>
 
 <?php include('includes/login-header.php');?>
@@ -90,11 +40,9 @@ if(isset($_POST['signin'])) {
         <!-- /.col -->
       </div>
     </form>
-
-    <a href="reset_password.php">I forgot my password</a><br>
+    <a href="#">I forgot my password</a><br>
     <a href="register.php" class="text-center">Register a new membership</a><br>
     <a href="admin/login.php" class="text-center">Sign in as admin</a>
-
   </div>
   <!-- /.login-box-body -->
 </div>

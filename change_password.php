@@ -1,66 +1,67 @@
 <?php
-include('includes/config.php');
-include('includes/db.php');
+  include('includes/header.php');  
 
-include('includes/header.php');
+    $message = '';
 
-$message = '';
+    if(isset($_POST['submit'])){
+        $password=$_POST['password'];
+        $newpassword=$_POST['newpassword'];
+        $renewpassword=$_POST['renewpassword'];
+        $username=$_POST['username'];
+        $updatedate=date('d-m-Y h:i:s', time());
 
-if(isset($_POST['submit'])){
-$password=$_POST['password'];
-$newpassword=$_POST['newpassword'];
-$renewpassword=$_POST['renewpassword'];
-$username=$_POST['username'];
-$updatedate=date('d-m-Y h:i:s', time());
-
-if(empty($password) || empty($newpassword) ||  empty($renewpassword) ||empty($username)) {
-    $message .= '
-					<div class="alert alert-danger">
-		                <h4><i class="icon fa fa-warning"></i> Error!</h4>
-		                All field are required
-		            </div>
-		            <h4>You may <a href="login.php">Login</a> or back to <a href="index.php">Homepage</a>.</h4>
-				';
-    } else {
-      if($newpassword != $renewpassword){
+    if(empty($password) || empty($newpassword) ||  empty($renewpassword) ||empty($username)) {
         $message .= '
-        <div class="alert alert-danger">
-            <h4><i class="icon fa fa-warning"></i> Error!</h4>
-        passwords did not match
-        </div>
-        <h4>You may <a href="login.php">Login</a> or back to <a href="index.php">Homepage</a>.</h4>
-    ';    
-      }else{
-        $sql ='SELECT password FROM members WHERE username=:username AND password=:password';
-        $stmt= $pdo->prepare($sql);
-        $stmt->execute(['username' => $username,'password' => $password]);
-        $row = $stmt->fetchAll();
-        $rowCount = $stmt->rowCount();
+                <div class="alert alert-danger">
+                    <h4><i class="icon fa fa-warning"></i> Error!</h4>
+                    All field are required
+                 </div>
+                <h4>You may <a href="login.php">Login</a> or back to <a href="index.php">Homepage</a>.</h4>
+            ';
+        } 
+        else {
+          if($newpassword != $renewpassword){
+              $message .= '
+                      <div class="alert alert-danger">
+                          <h4><i class="icon fa fa-warning"></i> Error!</h4>
+                      passwords did not match
+                      </div>
+                      <h4>You may <a href="login.php">Login</a> or back to <a href="index.php">Homepage</a>.</h4>
+                    ';    
+          } 
+          else {
+            $sql ='SELECT password FROM members WHERE username=:username AND password=:password';
+            $stmt= $pdo->prepare($sql);
+            $stmt->execute(['username' => $username,'password' => $password]);
+            $row = $stmt->fetchAll();
+            $rowCount = $stmt->rowCount();
 
-        if($rowCount > 0){
-            try{
-            $sql = 'UPDATE members SET password =:newpassword, datejoined =:updatedate WHERE username=:username';
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute(['newpassword' => $newpassword,'username' => $username, 'datejoined' => $updatedate]);
-            echo 'Password successfully Updated';
-            }
-            catch(PDOException $e){
-                $_SESSION['error'] = $e->getMessage();
-                // header('location: '.$path);
-            }
-        } else {
-        $message .= '
-        <div class="alert alert-danger">
-            <h4><i class="icon fa fa-warning"></i> Error!</h4>
-            Your current password is wrong
-        </div>
-        <h4>You may <a href="login.php">Login</a> or back to <a href="index.php">Homepage</a>.</h4>
-    ';   
-        }      
-      } 
-    } 
- }
+            if($rowCount > 0){
+                try{
+                    $sql = 'UPDATE members SET password =:newpassword, datejoined =:updatedate WHERE username=:username';
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->execute(['newpassword' => $newpassword,'username' => $username, 'datejoined' => $updatedate]);
+                    echo 'Password successfully Updated';
+                }
+                catch(PDOException $e){
+                    $_SESSION['error'] = $e->getMessage();
+                    // header('location: '.$path);
+                }
+            } 
+            else {
+                $message .= '
+                      <div class="alert alert-danger">
+                          <h4><i class="icon fa fa-warning"></i> Error!</h4>
+                          Your current password is wrong
+                      </div>
+                      <h4>You may <a href="login.php">Login</a> or back to <a href="index.php">Homepage</a>.</h4>
+                          ';   
+            }      
+          } 
+        } 
+    }
 ?>
+
    <!-- Content Wrapper. Contains page content -->
    <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -100,41 +101,6 @@ if(empty($password) || empty($newpassword) ||  empty($renewpassword) ||empty($us
       </form>
       </div>
     </section>
-
-</div>
-  
-
-<script>
-$(function(){
-  $(document).on('click', '.edit', function(e){
-    e.preventDefault();
-    $('#edit').modal('show');
-    var id = $(this).data('id');
-    getRow(id);
-  });
-
-  $(document).on('click', '.delete', function(e){
-    e.preventDefault();
-    $('#delete').modal('show');
-    var id = $(this).data('id');
-    getRow(id);
-  });
-
-});
-
-function getRow(id){
-  $.ajax({
-    type: 'POST',
-    url: 'category_row.php',
-    data: {id:id},
-    dataType: 'json',
-    success: function(response){
-      $('.catid').val(response.id);
-      $('#edit_name').val(response.name);
-      $('.catname').html(response.name);
-    }
-  });
-}
-</script>
+</div>  
 
 <?php include('includes/footer.php');?>
