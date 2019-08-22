@@ -3,7 +3,10 @@
   
   $_SESSION['id'] = $_GET['user'];
 
-  $id = $_SESSION['id'];
+    // $id = $_SESSION['id'];
+  $id = 29;
+
+
 
   try{
     $sql ="SELECT
@@ -24,11 +27,12 @@
       $year = $row['year_of_study'] ;
       $skills = $row['skills'] ;
       $notes = $row['notes'] ;
+    
     }
   }
   catch(PDOException $e){
   echo "There is some problem in connection: " . $e->getMessage();
-  }           
+  }      
 ?>
 
    <!-- Content Wrapper. Contains page content -->
@@ -36,7 +40,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-          <?php echo $row['username'].'`s Profile' ?>      
+          <?php echo $username.'`s Profile' ?>      
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -60,6 +64,7 @@
 
               <?php
                 try{
+                  
                     $sql = "SELECT
                               d.name AS name
                             FROM

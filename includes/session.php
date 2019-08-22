@@ -5,9 +5,6 @@
 //Start the session
 session_start();
 
-
-
-
  if(isset($_POST['signin'])) {
 	$username = htmlspecialchars($_POST['username']);
 	$password=md5(htmlspecialchars($_POST['password']));

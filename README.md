@@ -12,12 +12,12 @@
  : : : : : LOGIN DETAILS : : : : : 
 
 #ADMIN PANEL LOGIN:
-
+>root:http://localhost/projects/phppractice/pdo/pucompclub/admin/login.php
 >Username: admin
 >Password: 345
 
 #USER LOGIN:
-
+>root:http://localhost/projects/phppractice/pdo/pucompclub/login.php
 >Username: (pick any username from "members" table)
 >Password: 123
 ```

@@ -2,7 +2,8 @@
     include('includes/header.php');  
  
     $_SESSION['id'] = $_GET['user'];
-    $id = $_SESSION['id'];
+    // $id = $_SESSION['id'];
+    $id = 26;
     
     try{  
         $sql ="SELECT
