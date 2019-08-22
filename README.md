@@ -24,17 +24,3 @@
 ```
 ```
 
-## System Info
-
-### Author
-
-Michael Mathu
-
-[Mathu Media](http://www.mathumedia.com)
-
-### License
-
-<<<<<<< HEAD
-This project is licensed under the MIT License
-=======
-This project is licensed under the MIT Licens
