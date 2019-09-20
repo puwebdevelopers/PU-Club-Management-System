@@ -1,4 +1,56 @@
-<?php include('includes/header.php');?>
+<?php
+session_start();
+
+if((!isset($_SESSION['id']))&&(!isset($_SESSION['email']))&&(!isset($_SESSION['username']))){
+header("location:index.php?info=login");
+}else{
+
+include('includes/config.php');
+include('includes/db.php');
+
+$stmt=$pdo->prepare("SELECT * FROM members WHERE id=?");
+$stmt->execute([$_SESSION['id']]);
+$row=$stmt->fetch();
+
+
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>School Club | View Profile</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+ <!-- Bootstrap 3.3.7 -->
+   <link rel="stylesheet" href="../bower_components/bootstrap/css/bootstrap.min.css">
+   <!-- Font Awesome -->
+   <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
+   <!-- Ionicons -->
+   <link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
+   <!-- Theme style -->
+   <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+   <!-- AdminLTE Skins. Choose a skin from the css/skins
+        folder instead of downloading all of them to reduce the load. -->
+   <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
+   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+   <!--[if lt IE 9]>
+   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+   <![endif]-->
+
+   <!-- Google Font -->
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+  <?php include "topbar.php"; ?>
+  <!-- Left side column. contains the logo and sidebar -->
+ <?php include "sidebar.php";?>
 
    <!-- Content Wrapper. Contains page content -->
    <div class="content-wrapper">
@@ -14,74 +66,307 @@
     </section>
     <div class="box box-solid">
 	        			<div class="box-body">
-	        				<div class="col-sm-3">                  
-	        					<img src="<?php echo (!empty($row['photo'])) ? '../images/'.$row['photo'] : '../images/profile.jpg'; ?>" width="100%">
+	        				<div class="col-sm-3">
+                  
+	        					<img src="includes/profiles/<?php echo $_SESSION['id'].'.png' ?>" width="100%">
 	        				</div>
 	        				<div class="col-sm-9">
 	        					<div class="row">
 	        						<div class="col-sm-3">
 	        							<h4>Userame:</h4>
 	        							<h4>Email:</h4>
-												<h4>Course</h4>
-												<h4>Year of study</h4>
+                                        <h4>Education</h4>
+                                        <h4>Location</h4>
 	        							<h4>Skills</h4>
 	        							<h4>Note</h4>
 	        							<h4>Member Since:</h4>
 	        						</div>
 	        						<div class="col-sm-9">
-	        							<h4><?php echo $row['username']; ?>
+	        							<h4><?php echo $_SESSION['username']; ?>
 	        								<span class="pull-right">
 	        									<a href="#profile" class="btn btn-success btn-flat btn-sm" data-toggle="modal"><i class="fa fa-edit"></i> Edit</a>
 	        								</span>
 	        							</h4>
-												<h4><?php echo $row['email']; ?></h4>
-	        							<h4><?php echo $row['password']; ?></h4>
-												<h4><?php echo $row['year_of_study'] ?></h4>
-	        							<h4><?php echo $row['skills']; ?></h4>
-	        							<h4><?php echo $row['notes']; ?></h4>												
-												<h4><?php echo date('M d, Y', strtotime($row['username'])) ?></h4>
+	        							<h4><?php echo $_SESSION['email']; ?></h4>
+	        							<h4><?php echo 'test@gmail.com'; ?></h4>
+	        							<h4><?php echo $row['location']; ?></h4>
+	        							<h4><?php echo 'created_on'; ?>
+                        <span class="">
+	        									<a href="#skills" class="btn btn-success btn-flat btn-sm" data-toggle="modal"><i class="fa fa-plus"></i> Add Skill</a>
+	        								</span>
+                        </h4>
+                                        <h4><?php echo 'created_on'; ?></h4>
+                                        <h4><?php echo $row['created_on']; ?></h4>
 	        						</div>
 	        					</div>
 	        				</div>
 	        			</div>
 	        		</div>
-                <div class="box box-solid">
+
+                    <!-- <div class="box box-solid">
 	        			<div class="box-header with-border">
 	        				<h4 class="box-title"><i class="fa fa-calendar"></i> <b>Post History</b></h4>
 	        			</div>
-	        			<div class="box-body">	        			
-	        			<?php	
-	        						try{
-													$sql ='SELECT * FROM members';
-													$stmt = $pdo->prepare($sql);
-													$stmt->execute();
+	        			<div class="box-body">
+	        				<table class="table table-bordered" id="example1">
+	        					<thead>
+	        						<th class="hidden"></th>
+	        						<th>Date</th>
+	        						<th>Transaction#</th>
+	        						<th>Amount</th>
+	        						<th>Full Details</th>
+	        					</thead>
+	        					<tbody>
+	        					<?php
+	        				// 		try{
+                  //                     $sql ='SELECT * FROM members';
+                  //                       $stmt = $pdo->prepare($sql);
+                  //                       $stmt->execute();
+	        				// 			foreach($stmt as $row){
+                  //                           $sql ='SELECT * FROM members';
+                  //                           $stmt2 = $pdo->prepare($sql);
+                  //                           $stmt2->execute();
+                  //                           $total = 0;
 
-	        							foreach($stmt as $row){
-													$sql ='SELECT * FROM members';
-													$stmt2 = $pdo->prepare($sql);
-													$stmt2->execute();
-													$total = 0;
+	        								
+	        				// 				foreach($stmt2 as $row2){
+	        				// 					$subtotal ='price';
+	        				// 					$total  = 'subtotal';
+	        				// 				}
+	        				// 				echo "
+	        				// 					<tr>
+	        				// 						<td class='hidden'></td>
+	        				// 						<td>'sales_date'</td>
+	        				// 						<td>'pay_id'</td>
+	        				// 						<td>&#36</td>
+	        				// 						<td><button class='btn btn-sm btn-flat btn-info transact' data-id='".'id'."'><i class='fa fa-search'></i> View</button></td>
+	        				// 					</tr>
+	        				// 				";
+	        				// 			}
 
-	        								foreach($stmt2 as $row2){
-	        									$subtotal ='price';
-	        									$total  = 'subtotal';
-	        								}
-	        								echo "
-	        							
-	        								  ";
-	        							}
-	        						}
-        							catch(PDOException $e){
-										echo "There is some problem in connection: " . $e->getMessage();
-									}        					
-	        			?>	        				
+	        				// 		}
+        					// 		catch(PDOException $e){
+									// 	echo "There is some problem in connection: " . $e->getMessage();
+									// }
+
+	        					
+	        					?>
+	        					</tbody>
+	        				</table>
 	        			</div>
-	        		</div>
-  			</div>
+	        		</div> -->
 
-  <?php include('includes/profile_modal.php'); ?>
-	
-  <?php include('includes/footer.php');?>
+  
+
+  </div>
+  <?php include 'includes/profile_modal.php'; ?>
+  <?php 
+  //include "includes/insert_skill.php";
+  include 'includes/skill_modal.php';
+  ?>
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 2.4.13
+    </div>
+    <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE</a>.</strong> All rights
+    reserved.
+  </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark" style="display: none;">
+    <!-- Create the tabs -->
+    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+      <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+      <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <!-- Home tab content -->
+      <div class="tab-pane" id="control-sidebar-home-tab">
+        <h3 class="control-sidebar-heading">Recent Activity</h3>
+        <ul class="control-sidebar-menu">
+          <li>
+            <a href="javascript:void(0)">
+              <i class="menu-icon fa fa-birthday-cake bg-red"></i>
+
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
+
+                <p>Will be 23 on April 24th</p>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <i class="menu-icon fa fa-user bg-yellow"></i>
+
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Frodo Updated His Profile</h4>
+
+                <p>New phone +1(800)555-1234</p>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <i class="menu-icon fa fa-envelope-o bg-light-blue"></i>
+
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Nora Joined Mailing List</h4>
+
+                <p>nora@example.com</p>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <i class="menu-icon fa fa-file-code-o bg-green"></i>
+
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Cron Job 254 Executed</h4>
+
+                <p>Execution time 5 seconds</p>
+              </div>
+            </a>
+          </li>
+        </ul>
+        <!-- /.control-sidebar-menu -->
+
+        <h3 class="control-sidebar-heading">Tasks Progress</h3>
+        <ul class="control-sidebar-menu">
+          <li>
+            <a href="javascript:void(0)">
+              <h4 class="control-sidebar-subheading">
+                Custom Template Design
+                <span class="label label-danger pull-right">70%</span>
+              </h4>
+
+              <div class="progress progress-xxs">
+                <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <h4 class="control-sidebar-subheading">
+                Update Resume
+                <span class="label label-success pull-right">95%</span>
+              </h4>
+
+              <div class="progress progress-xxs">
+                <div class="progress-bar progress-bar-success" style="width: 95%"></div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <h4 class="control-sidebar-subheading">
+                Laravel Integration
+                <span class="label label-warning pull-right">50%</span>
+              </h4>
+
+              <div class="progress progress-xxs">
+                <div class="progress-bar progress-bar-warning" style="width: 50%"></div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <h4 class="control-sidebar-subheading">
+                Back End Framework
+                <span class="label label-primary pull-right">68%</span>
+              </h4>
+
+              <div class="progress progress-xxs">
+                <div class="progress-bar progress-bar-primary" style="width: 68%"></div>
+              </div>
+            </a>
+          </li>
+        </ul>
+        <!-- /.control-sidebar-menu -->
+
+      </div>
+      <!-- /.tab-pane -->
+      <!-- Stats tab content -->
+      <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+      <!-- /.tab-pane -->
+      <!-- Settings tab content -->
+      <div class="tab-pane" id="control-sidebar-settings-tab">
+        <form method="post">
+          <h3 class="control-sidebar-heading">General Settings</h3>
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Report panel usage
+              <input type="checkbox" class="pull-right" checked>
+            </label>
+
+            <p>
+              Some information about this general settings option
+            </p>
+          </div>
+          <!-- /.form-group -->
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Allow mail redirect
+              <input type="checkbox" class="pull-right" checked>
+            </label>
+
+            <p>
+              Other sets of options are available
+            </p>
+          </div>
+          <!-- /.form-group -->
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Expose author name in posts
+              <input type="checkbox" class="pull-right" checked>
+            </label>
+
+            <p>
+              Allow the user to show his name in blog posts
+            </p>
+          </div>
+          <!-- /.form-group -->
+
+          <h3 class="control-sidebar-heading">Chat Settings</h3>
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Show me as online
+              <input type="checkbox" class="pull-right" checked>
+            </label>
+          </div>
+          <!-- /.form-group -->
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Turn off notifications
+              <input type="checkbox" class="pull-right">
+            </label>
+          </div>
+          <!-- /.form-group -->
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Delete chat history
+              <a href="javascript:void(0)" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
+            </label>
+          </div>
+          <!-- /.form-group -->
+        </form>
+      </div>
+      <!-- /.tab-pane -->
+    </div>
+  </aside>
+  <!-- /.control-sidebar -->
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
+</div>
+<!-- ./wrapper -->
 
 <script>
 $(function(){
@@ -115,3 +400,21 @@ function getRow(id){
   });
 }
 </script>
+<!-- jQuery 3 -->
+<script src="../bower_components/jquery/jquery.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+    $.widget.bridge('uibutton', $.ui.button);
+</script>
+<!-- Bootstrap 3.3.7 -->
+<script src="../bower_components/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- AdminLTE App -->
+<script src="../dist/js/adminlte.min.js"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="../dist/js/pages/dashboard.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../dist/js/demo.js"></script>
+</body>
+</html>
+<?php } ?>

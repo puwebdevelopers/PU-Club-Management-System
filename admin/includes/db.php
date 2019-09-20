@@ -11,3 +11,9 @@ catch (PDOException $e){
     // Connection Failed
 exit("Error: " . $e->getMessage());
 }
+
+//for mysqli
+$conn=mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
+if(!$conn){
+echo 'error';
+}
