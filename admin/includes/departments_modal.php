@@ -65,8 +65,15 @@ if (isset($_POST['save'])) {
 
 }
 
-
+if (isset($_POST['edit'])){
+    $deptNameU=$_POST['deptNameU'];
+    $id=$_COOKIE['ids'];
+    $stmt = $pdo->prepare("UPDATE departments SET name=? WHERE id=?");
+    $stmt->execute([$deptNameU,$id]);
+    header("location:departments.php");
+}
 ?>
+
 
 <div class="modal fade" id="addnew">
     <div class="modal-dialog">
@@ -130,7 +137,7 @@ if (isset($_POST['save'])) {
 
                     <div class="form-group">
                         <label for="Title">Department Name</label>
-                        <input type="text" id="Title" name="username" class="form-control">
+                        <input type="text" id="Title" name="deptNameU" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="exampleFormControlFile1">Choose Logo</label>
@@ -140,7 +147,7 @@ if (isset($_POST['save'])) {
                         <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i
                                     class="fa fa-close"></i> Close
                         </button>
-                        <button type="submit" class="btn btn-primary btn-flat" name="add"><i class="fa fa-save"></i> Save
+                        <button type="submit" class="btn btn-primary btn-flat" name="edit"><i class="fa fa-save"></i> Save
                         </button>
                     </div>
                 </form>

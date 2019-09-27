@@ -113,13 +113,16 @@ if ((!isset($_SESSION['id'])) && (!isset($_SESSION['email'])) && (!isset($_SESSI
                             </td>
                             <td>
                    
-                             <script>
+                           
+<script>
 
-        function goDoSomething(d){
-            alert(d.getAttribute('data-id'));
-        }
+    function goDoSomething(d){
+        var ids=d.getAttribute('data-id');
+        document.cookie = 'ids='+ids;
+       // alert(d.getAttribute('data-id'));
+    }
 
-    </script>
+</script>
                               <a href='' class='btn btn-success btn-sm edit btn-flat' data-id='" . $row['id'] . "' onclick='goDoSomething(this);'><i class='fa fa-edit'></i> Edit</a>
                               <button class='btn btn-danger btn-sm delete btn-flat' data-id='" . $row['id'] . "'><i class='fa fa-trash'></i> Delete</button>
                               <a href='departments.php?department=" . $row['id'] . "' role='button' class='btn btn-primary btn-sm  btn-flat' data-id='" . $row['id'] . "'><i class='fa fa-search'></i> View Members</button>
