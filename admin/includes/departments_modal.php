@@ -70,7 +70,14 @@ if (isset($_POST['edit'])){
     $id=$_COOKIE['ids'];
     $stmt = $pdo->prepare("UPDATE departments SET name=? WHERE id=?");
     $stmt->execute([$deptNameU,$id]);
-    header("location:departments.php");
+    ?>
+    <script>
+        document.querySelector('input[name=edit]').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.reload();
+        });
+    </script>
+<?php
 }
 ?>
 
