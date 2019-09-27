@@ -1,4 +1,4 @@
-<?php  
+<?php
 $stmt=$pdo->prepare("SELECT * FROM members WHERE id=?");
 $stmt->execute([$_SESSION['id']]);
 $row = $stmt->fetch();

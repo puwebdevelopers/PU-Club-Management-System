@@ -40,10 +40,10 @@
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Add New Member</h4>
+                <h4 class="modal-title">DeleteMember</h4>
               </div>
               <div class="modal-body">
-              <h2>Are you sure you want to delete this Department?  </h2>
+              <h2>Are you sure you want to delete this Member?</h2>
               </div>
               <div class="modal-footer">
               <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Cancel</button>
