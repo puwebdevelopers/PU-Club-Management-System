@@ -1,26 +1,22 @@
 # PU-Club-Management-System
 
-> Club Management System built with HTML, BOOTSTRAP3, PHP, MYSQL, and PDO.
+Changes Done
+============
 
+1. Password hashing
 
-## Quick Start
+2. Login and Register
 
-```bash
-#CREATE A DATABASE NAMED "schoolclub" AND IMPORT THE SQL FILE "schoolclub.sql" FROM THE "sql file" FOLDER
+3. Cookies and Sessions
 
-# Add your DB params in config/db.php
+4. Logout
 
- : : : : : LOGIN DETAILS : : : : : 
+5. User profile update
 
-#ADMIN PANEL LOGIN:
->root:http://localhost/projects/phppractice/pdo/pucompclub/admin/login.php
->Username: admin
->Password: 345
+6. Access logs
 
-#USER LOGIN:
->root:http://localhost/projects/phppractice/pdo/pucompclub/login.php
->Username: (pick any username from "members" table)
->Password: 123
-```
-```
+7. Database structure has also been altered.
+
+NB: The database file is named schoolclub.sql
+
 
